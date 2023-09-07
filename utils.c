@@ -6,7 +6,7 @@
 /*   By: ealves <ealves@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/15 16:59:47 by ealves            #+#    #+#             */
-/*   Updated: 2023/08/15 17:35:40 by ealves           ###   ########.fr       */
+/*   Updated: 2023/09/07 12:45:53 by ealves           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,13 @@ int	ft_is_num(char *str)
 		i++;
 	}
 	return (1);
+}
+
+void	print_msg(t_philo *philo, char *msg)
+{
+	pthread_mutex_lock(&philo->global->print);
+	printf("timestamp : %lld id : %d msg : %s\n", timestamp(), philo->id, msg);
+	pthread_mutex_unlock(&philo->global->print);
 }
 
 int	ft_atoi(char *str)
@@ -55,17 +62,17 @@ int	ft_atoi(char *str)
 	return (j);
 }
 
-void	*ft_memset(void *s, int c, size_t n)
-{
-	size_t	i;
-	char	*kol;
+// void	*ft_memset(void *s, int c, size_t n)
+// {
+// 	size_t	i;
+// 	char	*kol;
 
-	i = 0;
-	kol = (char *) s;
-	while (i < n)
-	{
-		kol[i] = c;
-		i++;
-	}
-	return (s);
-}
+// 	i = 0;
+// 	kol = (char *) s;
+// 	while (i < n)
+// 	{
+// 		kol[i] = c;
+// 		i++;
+// 	}
+// 	return (s);
+// }

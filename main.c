@@ -6,27 +6,13 @@
 /*   By: ealves <ealves@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/15 16:59:42 by ealves            #+#    #+#             */
-/*   Updated: 2023/08/15 19:19:40 by ealves           ###   ########.fr       */
+/*   Updated: 2023/09/07 12:47:42 by ealves           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
 // number_of_philosophers + time_to_die + time_to_eat + time_to_sleep
-
-int	init(t_global *global, int argc, char **argv)
-{
-	global->philo = malloc(sizeof(t_philo) * atoi(argv[1]) + 1);
-	if (!global->philo)
-		return (1);
-	global->nb_philo = atoi(argv[1]);
-	global->death = atoi(argv[2]);
-	global->eat = atoi(argv[3]);
-	global->sleep = atoi(argv[4]);
-	if (argc == 6)
-		global->nb_eat = atoi(argv[5]);
-	return (0);
-}
 
 int	check_arg(int argc, char **argv)
 {
@@ -59,14 +45,26 @@ int	check_arg(int argc, char **argv)
 int	main(int argc, char **argv)
 {
 	t_global	global;
+	int	i;
 
+	i = 0;
 	if (check_arg(argc, argv))
 		return (1);
-	if (argv[1][0] == '0')
+	if (ft_atoi(argv[1]) == 0 || ft_atoi(argv[1]) > 200)
 	{
-		printf("Error : no philosopher\n");
+		printf("Error : wrong number of philosopher\n");
 		return (1);
 	}
 	init(&global, argc, argv);
+	printf("%d\n",global.nb_philo);
+	while (i < global.nb_philo)
+	{
+		global.philo[i].global = &global;
+		if (pthread_create(&global.philo[i].t_id,
+				NULL, p_routine, &global.philo[i]))
+			return (1);
+		i++;
+	}
+	printf("timestamp final : %lld\n", timestamp());
 	return (0);
 }
