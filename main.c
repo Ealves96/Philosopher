@@ -6,7 +6,7 @@
 /*   By: ealves <ealves@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/15 16:59:42 by ealves            #+#    #+#             */
-/*   Updated: 2023/09/07 12:47:42 by ealves           ###   ########.fr       */
+/*   Updated: 2023/09/14 18:57:31 by ealves           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,9 +45,8 @@ int	check_arg(int argc, char **argv)
 int	main(int argc, char **argv)
 {
 	t_global	global;
-	int	i;
+	int			i;
 
-	i = 0;
 	if (check_arg(argc, argv))
 		return (1);
 	if (ft_atoi(argv[1]) == 0 || ft_atoi(argv[1]) > 200)
@@ -56,15 +55,15 @@ int	main(int argc, char **argv)
 		return (1);
 	}
 	init(&global, argc, argv);
-	printf("%d\n",global.nb_philo);
+	i = 0;
 	while (i < global.nb_philo)
 	{
 		global.philo[i].global = &global;
-		if (pthread_create(&global.philo[i].t_id,
-				NULL, p_routine, &global.philo[i]))
-			return (1);
+		pthread_create(&global.philo[i].t_id,
+			NULL, &p_routine, &global.philo[i]);
 		i++;
 	}
-	printf("timestamp final : %lld\n", timestamp());
+	while (1)
+		i++;
 	return (0);
 }

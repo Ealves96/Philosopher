@@ -6,7 +6,7 @@
 /*   By: ealves <ealves@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/15 16:59:47 by ealves            #+#    #+#             */
-/*   Updated: 2023/09/07 12:45:53 by ealves           ###   ########.fr       */
+/*   Updated: 2023/09/14 18:58:19 by ealves           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,18 +61,3 @@ int	ft_atoi(char *str)
 		return (-j);
 	return (j);
 }
-
-// void	*ft_memset(void *s, int c, size_t n)
-// {
-// 	size_t	i;
-// 	char	*kol;
-
-// 	i = 0;
-// 	kol = (char *) s;
-// 	while (i < n)
-// 	{
-// 		kol[i] = c;
-// 		i++;
-// 	}
-// 	return (s);
-// }

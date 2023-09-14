@@ -6,7 +6,7 @@
 /*   By: ealves <ealves@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/05 14:49:32 by ealves            #+#    #+#             */
-/*   Updated: 2023/09/07 12:39:54 by ealves           ###   ########.fr       */
+/*   Updated: 2023/09/14 18:57:49 by ealves           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,31 +39,45 @@ void	ft_usleep(long int time)
 		usleep(time / 10);
 }
 
-int	init(t_global *global, int argc, char **argv)
+int	init_fork(t_global *global)
 {
 	int	i;
 
 	i = 0;
+	while (i < global->nb_philo)
+	{
+		pthread_mutex_init(&global->philo[i].fork, NULL);
+		global->philo[i].fork_left = &global->philo[i].fork;
+		i++;
+	}
+	i = 0;
+	while (i < global->nb_philo)
+	{
+		if (i == global->nb_philo - 1)
+			global->philo[i].fork_right = &global->philo[0].fork;
+		else
+			global->philo[i].fork_right = &global->philo[i + 1].fork;
+		global->philo[i].id = i;
+		i++;
+	}
+	return (0);
+}
+
+int	init(t_global *global, int argc, char **argv)
+{
 	global->nb_philo = atoi(argv[1]);
 	global->t_death = atoi(argv[2]);
 	global->t_eat = atoi(argv[3]);
 	global->t_sleep = atoi(argv[4]);
+	global->dead = 0;
 	if (argc == 6)
 		global->nb_eat = atoi(argv[5]);
-	global->all_fork = malloc(sizeof(pthread_mutex_t) * global->nb_philo);
-	if (!global->all_fork)
-		return (1);
+	else
+		global->nb_eat = -1;
 	global->philo = malloc(sizeof(t_philo) * atoi(argv[1]) + 1);
 	if (!global->philo)
 		return (1);
-	while (i < global->nb_philo)
-	{
-		pthread_mutex_init(&global->all_fork[i], NULL);
-		global->philo[i].id = i;
-		i++;
-	}
+	init_fork(global);
 	pthread_mutex_init(&global->print, NULL);
-	pthread_mutex_init(&global->dead, NULL);
-	pthread_mutex_init(&global->eat, NULL);
 	return (0);
 }
