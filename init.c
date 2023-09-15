@@ -6,7 +6,7 @@
 /*   By: ealves <ealves@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/05 14:49:32 by ealves            #+#    #+#             */
-/*   Updated: 2023/09/14 18:57:49 by ealves           ###   ########.fr       */
+/*   Updated: 2023/09/15 17:08:29 by ealves           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,7 +57,7 @@ int	init_fork(t_global *global)
 			global->philo[i].fork_right = &global->philo[0].fork;
 		else
 			global->philo[i].fork_right = &global->philo[i + 1].fork;
-		global->philo[i].id = i;
+		global->philo[i].id = i + 1;
 		i++;
 	}
 	return (0);
