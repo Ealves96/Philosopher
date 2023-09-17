@@ -6,7 +6,7 @@
 /*   By: ealves <ealves@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/15 17:10:07 by ealves            #+#    #+#             */
-/*   Updated: 2023/09/14 18:58:03 by ealves           ###   ########.fr       */
+/*   Updated: 2023/09/17 12:08:56 by ealves           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,11 +35,11 @@ typedef struct s_philo
 typedef struct s_global
 {
 	t_philo			*philo;
-	int				nb_philo;
-	unsigned int	t_death;
-	unsigned int	t_eat;
-	unsigned int	t_sleep;
-	unsigned int	nb_eat;
+	int				nb_philo; //arg1
+	unsigned int	t_death; // arg2
+	unsigned int	t_eat; //arg3
+	unsigned int	t_sleep; //arg4
+	unsigned int	nb_eat; //arg5
 	pthread_mutex_t	print;
 	unsigned int	dead;
 }	t_global;
