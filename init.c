@@ -6,7 +6,7 @@
 /*   By: ealves <ealves@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/05 14:49:32 by ealves            #+#    #+#             */
-/*   Updated: 2023/09/15 17:08:29 by ealves           ###   ########.fr       */
+/*   Updated: 2023/10/02 18:12:41 by ealves           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,10 +33,20 @@ long long	timestamp(void)
 void	ft_usleep(long int time)
 {
 	long int	curr_time;
+	t_global	*global;
 
 	curr_time = ft_gettimeofday();
 	while ((ft_gettimeofday() - curr_time) < time)
+	{
+		pthread_mutex_lock(&global->dead_check);
+		if (global->dead == 1)
+		{
+			pthread_mutex_unlock(&global->dead_check);
+			return ;
+		}
+		pthread_mutex_unlock(&global->dead_check);
 		usleep(time / 10);
+	}
 }
 
 int	init_fork(t_global *global)

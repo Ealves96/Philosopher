@@ -6,7 +6,7 @@
 /*   By: ealves <ealves@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/15 16:59:47 by ealves            #+#    #+#             */
-/*   Updated: 2023/09/14 18:58:19 by ealves           ###   ########.fr       */
+/*   Updated: 2023/10/02 17:48:27 by ealves           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ int	ft_is_num(char *str)
 void	print_msg(t_philo *philo, char *msg)
 {
 	pthread_mutex_lock(&philo->global->print);
-	printf("timestamp : %lld id : %d msg : %s\n", timestamp(), philo->id, msg);
+	printf("%lld %d %s\n", timestamp(), philo->id, msg);
 	pthread_mutex_unlock(&philo->global->print);
 }
 

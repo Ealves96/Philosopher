@@ -6,7 +6,7 @@
 /*   By: ealves <ealves@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/15 17:10:07 by ealves            #+#    #+#             */
-/*   Updated: 2023/09/17 12:08:56 by ealves           ###   ########.fr       */
+/*   Updated: 2023/10/02 18:10:57 by ealves           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,6 +41,7 @@ typedef struct s_global
 	unsigned int	t_sleep; //arg4
 	unsigned int	nb_eat; //arg5
 	pthread_mutex_t	print;
+	pthread_mutex_t	dead_check;
 	unsigned int	dead;
 }	t_global;
 
