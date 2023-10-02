@@ -3,17 +3,17 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: ealves <ealves@student.42.fr>              +#+  +:+       +#+         #
+#    By: elie <elie@student.42.fr>                  +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/08/15 17:13:14 by ealves            #+#    #+#              #
-#    Updated: 2023/09/07 12:14:24 by ealves           ###   ########.fr        #
+#    Updated: 2023/10/02 21:47:54 by elie             ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME			=	philo
 
 SRCS			=	main.c utils.c init.c\
-					algo.c
+					algo.c check_philo.c
 
 OBJS			=	${SRCS:.c=.o}
 

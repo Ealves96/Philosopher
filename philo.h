@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   philo.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ealves <ealves@student.42.fr>              +#+  +:+       +#+        */
+/*   By: elie <elie@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/15 17:10:07 by ealves            #+#    #+#             */
-/*   Updated: 2023/10/02 18:10:57 by ealves           ###   ########.fr       */
+/*   Updated: 2023/10/02 22:47:02 by elie             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,6 +46,7 @@ typedef struct s_global
 }	t_global;
 
 //////////main.c///////////
+void		freeall(t_global *global);
 int			check_arg(int argc, char **argv);
 
 //////////utils.c///////////
@@ -56,7 +57,7 @@ void		print_msg(t_philo *philo, char *msg);
 //////////init.c///////////
 
 long long	timestamp(void);
-void		ft_usleep(long int time);
+void		ft_usleep(long int time, t_global *global);
 int			init_fork(t_global *global);
 int			init(t_global *global, int argc, char **argv);
 
@@ -65,5 +66,8 @@ void	ft_sleep(t_philo *philo);
 void	ft_eat(t_philo *philo);
 int		ft_recup_fork(t_philo *philo);
 void	*p_routine(void *philo);
+
+//////////check_philo.c////
+int 	is_death(t_philo *philo);
 
 #endif

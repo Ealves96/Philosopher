@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   algo.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ealves <ealves@student.42.fr>              +#+  +:+       +#+        */
+/*   By: elie <elie@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/07 12:13:55 by ealves            #+#    #+#             */
-/*   Updated: 2023/09/14 19:17:23 by ealves           ###   ########.fr       */
+/*   Updated: 2023/10/02 22:20:35 by elie             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,14 +15,14 @@
 void	ft_sleep(t_philo *philo)
 {
 	print_msg(philo, "is sleeping\n");
-	ft_usleep(philo->global->t_sleep);
+	// ft_usleep(philo->global->t_sleep, philo->global);
 }
 
 void	ft_eat(t_philo *philo)
 {
 	print_msg(philo, "is eating\n");
 	philo->last_eat = timestamp();
-	ft_usleep(philo->global->t_eat);
+	// ft_usleep(philo->global->t_eat, philo->global);
 	pthread_mutex_unlock(philo->fork_left);
 	print_msg(philo, "dropped a fork\n");
 	pthread_mutex_unlock(philo->fork_right);
@@ -61,22 +61,21 @@ int	ft_recup_fork(t_philo *philo)
 void	*p_routine(void *data)
 {
 	t_philo			*philo;
-	unsigned int	i;
+	// unsigned int	i;
 
-	i = 0;
+	// i = 0;
 
 	philo = (t_philo *)data;
 	philo->status = 0;
 	if (philo->id % 2 == 1)
-		ft_usleep(0.25 * philo->global->t_eat);
-	while (philo->global->dead == 0 && i != philo->global->nb_eat)
+		ft_usleep(0.25 * philo->global->t_eat, philo->global);
+	while (is_death(philo) == 0)
 	{
-		if (ft_recup_fork(philo) == 1)
-			return (NULL);
+		ft_recup_fork(philo);
 		ft_eat(philo);
-		i++;
 		ft_sleep(philo);
 		print_msg(philo, "is thinking\n");
 	}
+	print_msg(philo, "is dead\n");
 	return (NULL);
 }

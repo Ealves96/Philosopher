@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   init.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ealves <ealves@student.42.fr>              +#+  +:+       +#+        */
+/*   By: elie <elie@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/05 14:49:32 by ealves            #+#    #+#             */
-/*   Updated: 2023/10/02 18:12:41 by ealves           ###   ########.fr       */
+/*   Updated: 2023/10/02 21:57:39 by elie             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,10 +30,9 @@ long long	timestamp(void)
 	return (ft_gettimeofday() - start);
 }
 
-void	ft_usleep(long int time)
+void	ft_usleep(long int time, t_global *global)
 {
 	long int	curr_time;
-	t_global	*global;
 
 	curr_time = ft_gettimeofday();
 	while ((ft_gettimeofday() - curr_time) < time)
