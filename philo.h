@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   philo.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: elie <elie@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: ealves <ealves@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/15 17:10:07 by ealves            #+#    #+#             */
-/*   Updated: 2023/10/02 22:47:02 by elie             ###   ########.fr       */
+/*   Updated: 2023/10/03 14:11:13 by ealves           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,5 +69,6 @@ void	*p_routine(void *philo);
 
 //////////check_philo.c////
 int 	is_death(t_philo *philo);
+void	*check_death(void *data);
 
 #endif

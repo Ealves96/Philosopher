@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: elie <elie@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: ealves <ealves@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/15 16:59:42 by ealves            #+#    #+#             */
-/*   Updated: 2023/10/02 22:57:24 by elie             ###   ########.fr       */
+/*   Updated: 2023/10/03 14:33:31 by ealves           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,10 +22,9 @@ void	freeall(t_global *global)
 	{
 		pthread_mutex_destroy(global->philo[i].fork_left);
 		pthread_mutex_destroy(global->philo[i].fork_right);
-		free(&global->philo[i]);
 	}
-	pthread_mutex_destroy(&global->philo->fork);
 	free(global->philo);
+	pthread_mutex_destroy(&global->philo->fork);
 	pthread_mutex_destroy(&global->print);
 	pthread_mutex_destroy(&global->dead_check);
 }
@@ -71,13 +70,19 @@ int	main(int argc, char **argv)
 		return (1);
 	}
 	init(&global, argc, argv);
+	pthread_t threads[global.nb_philo];
 	i = 0;
 	while (i < global.nb_philo)
 	{
 		global.philo[i].global = &global;
 		pthread_create(&global.philo[i].t_id,
 			NULL, &p_routine, &global.philo[i]);
-		p_routine(&global.philo[i]);
+		i++;
+	}
+	i = 0;
+	while (i < global.nb_philo)
+	{
+		pthread_join(threads[i], NULL); // Attend que chaque thread se termine
 		i++;
 	}
 	freeall(&global);

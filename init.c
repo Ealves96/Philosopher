@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   init.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: elie <elie@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: ealves <ealves@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/05 14:49:32 by ealves            #+#    #+#             */
-/*   Updated: 2023/10/02 21:57:39 by elie             ###   ########.fr       */
+/*   Updated: 2023/10/03 14:04:54 by ealves           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,6 +69,10 @@ int	init_fork(t_global *global)
 		global->philo[i].id = i + 1;
 		i++;
 	}
+	i = -1;
+	// while (++i < global->nb_philo)
+	// 	if (pthread_join(global->philo[i].t_id, NULL) != 0)
+	// 		return (-1);
 	return (0);
 }
 
