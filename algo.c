@@ -6,7 +6,7 @@
 /*   By: ealves <ealves@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/07 12:13:55 by ealves            #+#    #+#             */
-/*   Updated: 2023/10/03 14:20:37 by ealves           ###   ########.fr       */
+/*   Updated: 2023/10/03 17:12:20 by ealves           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,11 +67,11 @@ void	*p_routine(void *data)
 
 	philo = (t_philo *)data;
 	philo->status = 0;
-	if (philo->id % 2 == 1)
+	if (philo->id % 2 == 0)
 		ft_usleep(0.25 * philo->global->t_eat, philo->global);
 	while (is_death(philo) == 0)
 	{
-		pthread_create(&philo->t_id, NULL, check_death, data);
+		check_death(data);
 		ft_recup_fork(philo);
 		ft_eat(philo);
 		ft_sleep(philo);

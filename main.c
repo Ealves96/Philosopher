@@ -6,7 +6,7 @@
 /*   By: ealves <ealves@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/15 16:59:42 by ealves            #+#    #+#             */
-/*   Updated: 2023/10/03 14:33:31 by ealves           ###   ########.fr       */
+/*   Updated: 2023/10/03 18:26:01 by ealves           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,10 +19,7 @@ void	freeall(t_global *global)
 
 	i = -1;
 	while (++i < global->nb_philo)
-	{
 		pthread_mutex_destroy(global->philo[i].fork_left);
-		pthread_mutex_destroy(global->philo[i].fork_right);
-	}
 	free(global->philo);
 	pthread_mutex_destroy(&global->philo->fork);
 	pthread_mutex_destroy(&global->print);
@@ -64,13 +61,13 @@ int	main(int argc, char **argv)
 
 	if (check_arg(argc, argv))
 		return (1);
-	if (ft_atoi(argv[1]) == 0 || ft_atoi(argv[1]) > 200)
+		// checker tous les arguments qd ils sont egaals a 0 ou en neg
+	if (ft_atoi(argv[1]) <= 0 || ft_atoi(argv[1]) > 200)
 	{
 		printf("Error : wrong number of philosopher\n");
 		return (1);
 	}
 	init(&global, argc, argv);
-	pthread_t threads[global.nb_philo];
 	i = 0;
 	while (i < global.nb_philo)
 	{
@@ -79,12 +76,14 @@ int	main(int argc, char **argv)
 			NULL, &p_routine, &global.philo[i]);
 		i++;
 	}
-	i = 0;
-	while (i < global.nb_philo)
-	{
-		pthread_join(threads[i], NULL); // Attend que chaque thread se termine
-		i++;
-	}
+	// while (1)
+	//check_ddeath; boucl infini
+	// i = 0;
+	// while (i < global.nb_philo)
+	// {
+	// 	pthread_join(threads[i], NULL); // Attend que chaque thread se termine
+	// 	i++;
+	// }
 	freeall(&global);
 	return (0);
 }
