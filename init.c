@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   init.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ealves <ealves@student.42.fr>              +#+  +:+       +#+        */
+/*   By: jralph <jralph@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/05 14:49:32 by ealves            #+#    #+#             */
-/*   Updated: 2023/10/03 14:04:54 by ealves           ###   ########.fr       */
+/*   Updated: 2023/10/03 20:40:16 by jralph           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,27 +30,18 @@ long long	timestamp(void)
 	return (ft_gettimeofday() - start);
 }
 
-void	ft_usleep(long int time, t_global *global)
+void	ft_usleep(long int time)
 {
 	long int	curr_time;
 
 	curr_time = ft_gettimeofday();
 	while ((ft_gettimeofday() - curr_time) < time)
-	{
-		pthread_mutex_lock(&global->dead_check);
-		if (global->dead == 1)
-		{
-			pthread_mutex_unlock(&global->dead_check);
-			return ;
-		}
-		pthread_mutex_unlock(&global->dead_check);
 		usleep(time / 10);
-	}
 }
 
-int	init_fork(t_global *global)
+static int	init_mutex(t_global *global)
 {
-	int	i;
+	unsigned int	i;
 
 	i = 0;
 	while (i < global->nb_philo)
@@ -69,10 +60,8 @@ int	init_fork(t_global *global)
 		global->philo[i].id = i + 1;
 		i++;
 	}
-	i = -1;
-	// while (++i < global->nb_philo)
-	// 	if (pthread_join(global->philo[i].t_id, NULL) != 0)
-	// 		return (-1);
+	pthread_mutex_init(&global->print, NULL);
+	pthread_mutex_init(&global->dead_check, NULL);
 	return (0);
 }
 
@@ -82,7 +71,7 @@ int	init(t_global *global, int argc, char **argv)
 	global->t_death = atoi(argv[2]);
 	global->t_eat = atoi(argv[3]);
 	global->t_sleep = atoi(argv[4]);
-	global->dead = 0;
+	global->stop_thread = 0;
 	if (argc == 6)
 		global->nb_eat = atoi(argv[5]);
 	else
@@ -90,7 +79,6 @@ int	init(t_global *global, int argc, char **argv)
 	global->philo = malloc(sizeof(t_philo) * atoi(argv[1]) + 1);
 	if (!global->philo)
 		return (1);
-	init_fork(global);
-	pthread_mutex_init(&global->print, NULL);
+	init_mutex(global);
 	return (0);
 }

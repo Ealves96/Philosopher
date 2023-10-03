@@ -3,47 +3,57 @@
 /*                                                        :::      ::::::::   */
 /*   check_philo.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ealves <ealves@student.42.fr>              +#+  +:+       +#+        */
+/*   By: jralph <jralph@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/17 11:50:23 by ealves            #+#    #+#             */
-/*   Updated: 2023/10/03 14:16:57 by ealves           ###   ########.fr       */
+/*   Updated: 2023/10/03 20:35:18 by jralph           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
-int	is_death(t_philo *philo)
+int	check_stop(t_global *global)
 {
-	int	res;
+	int	stop;
 
-	res = philo->global->t_eat - philo->last_eat;
-	pthread_mutex_lock(&philo->global->dead_check);
-	if (res <= 0)
+	pthread_mutex_lock(&global->dead_check);
+	stop = global->stop_thread;
+	pthread_mutex_unlock(&global->dead_check);
+	return (stop);
+}
+
+int	check_death(t_global *global)
+{
+	t_philo			philo;
+	unsigned int	i;
+
+	i = -1;
+	while (++i < global->nb_philo)
 	{
-		pthread_mutex_unlock(&philo->global->dead_check);
-		return (1);
+		philo = global->philo[i];
+		if (timestamp() - philo.last_eat >= global->t_death)
+		{
+			global->stop_thread = 1;
+			print_msg(&philo, "is dead");
+			return (1);
+		}
 	}
-	pthread_mutex_unlock(&philo->global->dead_check);
 	return (0);
 }
 
-void	*check_death(void *data)
+int	check_nb_eat(t_global *global)
 {
-	t_philo	*philo;
+	t_philo				philo;
+	unsigned int		i;
 
-	philo = (t_philo *)data;
-	ft_usleep(philo->global->t_death + 1, philo->global);
-	// pthread_mutex_lock(&philo->global->m_eat);
-	// pthread_mutex_lock(&philo->global->m_stop);
-	if (!(is_death(philo) == 0) && timestamp() - \
-			philo->last_eat >= (long)(philo->global->t_death))
+	i = -1;
+	while (++i < global->nb_philo)
 	{
-		// pthread_mutex_unlock(&philo->global->m_eat);
-		// pthread_mutex_unlock(&philo->global->m_stop);
-		// print_msg(philo, " is dead\n");
-		is_death(philo);
+		philo = global->philo[i];
+		if (global->nb_eat == -1)
+			return (1);
+		if (global->nb_eat > philo.nb_eat)
+			return (1);
 	}
-	// pthread_mutex_unlock(&philo->global->m_eat);
-	// pthread_mutex_unlock(&philo->global->m_stop);
-	return (NULL);
+	return (0);
 }
