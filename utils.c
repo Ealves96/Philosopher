@@ -3,14 +3,32 @@
 /*                                                        :::      ::::::::   */
 /*   utils.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ealves <ealves@student.42.fr>              +#+  +:+       +#+        */
+/*   By: jralph <jralph@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/15 16:59:47 by ealves            #+#    #+#             */
-/*   Updated: 2023/10/03 18:26:20 by ealves           ###   ########.fr       */
+/*   Updated: 2023/10/04 18:46:58 by jralph           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
+
+long long	ft_gettimeofday(void)
+{
+	struct timeval	time_v;
+
+	gettimeofday(&time_v, NULL);
+	return (((long long)(time_v.tv_sec)) * 1000
+		+ ((long long)(time_v.tv_usec)) / 1000);
+}
+
+long long	timestamp(void)
+{
+	static long long	start = 0;
+
+	if (start == 0)
+		start = ft_gettimeofday();
+	return (ft_gettimeofday() - start);
+}
 
 int	ft_is_num(char *str)
 {
@@ -28,9 +46,9 @@ int	ft_is_num(char *str)
 
 void	print_msg(t_philo *philo, char *msg)
 {
-	pthread_mutex_lock(&philo->global->print);
+	pthread_mutex_lock(&philo->global->dead_check);
 	printf("%lld %d %s\n", timestamp(), philo->id, msg);
-	pthread_mutex_unlock(&philo->global->print);
+	pthread_mutex_unlock(&philo->global->dead_check);
 }
 
 int	ft_atoi(char *str)

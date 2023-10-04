@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   check_arg.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jralph <jralph@student.42.fr>              +#+  +:+       +#+        */
+/*   By: ealves <ealves@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/03 18:35:31 by jralph            #+#    #+#             */
-/*   Updated: 2023/10/03 18:50:50 by jralph           ###   ########.fr       */
+/*   Updated: 2023/10/04 19:34:51 by ealves           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ static int	ft_check_arg2(int argc, char **argv)
 		printf("Error : wrong number of philosopher\n");
 		return (1);
 	}
-	while(++j < argc)
+	while (++j < argc)
 	{
 		if (ft_atoi(argv[j]) <= 0)
 			return (printf("Error : negative number find\n"), 1);

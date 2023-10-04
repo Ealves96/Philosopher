@@ -6,7 +6,7 @@
 /*   By: jralph <jralph@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/17 11:50:23 by ealves            #+#    #+#             */
-/*   Updated: 2023/10/03 20:35:18 by jralph           ###   ########.fr       */
+/*   Updated: 2023/10/04 18:27:27 by jralph           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,15 +26,17 @@ int	check_death(t_global *global)
 {
 	t_philo			philo;
 	unsigned int	i;
+	long long int	time;
 
 	i = -1;
+	time = timestamp();
 	while (++i < global->nb_philo)
 	{
 		philo = global->philo[i];
-		if (timestamp() - philo.last_eat >= global->t_death)
+		if (time - philo.last_eat >= global->t_death)
 		{
 			global->stop_thread = 1;
-			print_msg(&philo, "is dead");
+			printf("%lld %d %s\n", time, philo.id, "is dead");
 			return (1);
 		}
 	}
@@ -46,14 +48,16 @@ int	check_nb_eat(t_global *global)
 	t_philo				philo;
 	unsigned int		i;
 
-	i = -1;
-	while (++i < global->nb_philo)
+	i = 0;
+	while (i < global->nb_philo)
 	{
 		philo = global->philo[i];
 		if (global->nb_eat == -1)
 			return (1);
 		if (global->nb_eat > philo.nb_eat)
 			return (1);
+		i++;
 	}
+	global->stop_thread = 1;
 	return (0);
 }

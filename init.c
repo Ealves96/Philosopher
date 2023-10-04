@@ -3,31 +3,30 @@
 /*                                                        :::      ::::::::   */
 /*   init.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jralph <jralph@student.42.fr>              +#+  +:+       +#+        */
+/*   By: ealves <ealves@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/05 14:49:32 by ealves            #+#    #+#             */
-/*   Updated: 2023/10/03 20:40:16 by jralph           ###   ########.fr       */
+/*   Updated: 2023/10/04 19:33:13 by ealves           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
-static long long	ft_gettimeofday(void)
+int	ft_init_philo(t_global *global)
 {
-	struct timeval	time_v;
+	t_philo			philo;
+	unsigned int	i;
 
-	gettimeofday(&time_v, NULL);
-	return (((long long)(time_v.tv_sec)) * 1000
-		+ ((long long)(time_v.tv_usec)) / 1000);
-}
-
-long long	timestamp(void)
-{
-	static long long	start = 0;
-
-	if (start == 0)
-		start = ft_gettimeofday();
-	return (ft_gettimeofday() - start);
+	i = 0;
+	while (i < global->nb_philo)
+	{
+		philo = global->philo[i];
+		philo.id = i + 1;
+		philo.last_eat = 0;
+		philo.nb_eat = 0;
+		i++;
+	}
+	return (0);
 }
 
 void	ft_usleep(long int time)
@@ -60,9 +59,8 @@ static int	init_mutex(t_global *global)
 		global->philo[i].id = i + 1;
 		i++;
 	}
-	pthread_mutex_init(&global->print, NULL);
 	pthread_mutex_init(&global->dead_check, NULL);
-	return (0);
+	return (ft_init_philo(global));
 }
 
 int	init(t_global *global, int argc, char **argv)
@@ -76,9 +74,11 @@ int	init(t_global *global, int argc, char **argv)
 		global->nb_eat = atoi(argv[5]);
 	else
 		global->nb_eat = -1;
-	global->philo = malloc(sizeof(t_philo) * atoi(argv[1]) + 1);
+	global->philo = malloc(sizeof(t_philo) * atoi(argv[1]));
 	if (!global->philo)
 		return (1);
-	init_mutex(global);
-	return (0);
+	global->thrds = malloc(sizeof(pthread_t) * atoi(argv[1]));
+	if (!global->thrds)
+		return (1);
+	return (init_mutex(global));
 }

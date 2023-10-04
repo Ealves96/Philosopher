@@ -6,26 +6,24 @@
 #    By: jralph <jralph@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/08/15 17:13:14 by ealves            #+#    #+#              #
-#    Updated: 2023/10/03 21:03:39 by jralph           ###   ########.fr        #
+#    Updated: 2023/10/04 17:43:22 by jralph           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME			=	philo
 
-SRCS			=	main.c utils.c init.c\
-					algo.c check_philo.c check_arg.c\
-					eat.c
+SRCS			= algo.c check_arg.c check_philo.c eat.c init.c main.c utils.c
 
 OBJS			=	${SRCS:.c=.o}
 
-# HEAD			=	-Iincludes
+HEAD			=	-I includes
 
-CFLAGS			=	-Wall -Werror -Wextra -D BENCH=0 -g
+CFLAGS			=	-Wall -Werror -Wextra -g
 
 all				:	${NAME}
 
 .c.o	:
-		@cc  ${CFLAGS} -c $< -o ${<:.c=.o}
+		@cc ${CFLAGS} -c $< -o ${<:.c=.o} -I includes/
 
 $(NAME) : $(OBJS)
 	cc $(OBJS) -o $(NAME)

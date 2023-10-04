@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jralph <jralph@student.42.fr>              +#+  +:+       +#+        */
+/*   By: ealves <ealves@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/15 16:59:42 by ealves            #+#    #+#             */
-/*   Updated: 2023/10/03 21:18:25 by jralph           ###   ########.fr       */
+/*   Updated: 2023/10/04 19:34:15 by ealves           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,47 +19,50 @@ static void	freeall(t_global *global)
 
 	i = -1;
 	while (++i < global->nb_philo)
-		pthread_mutex_destroy(global->philo[i].fork_left);
+		pthread_mutex_destroy(&global->philo[i].fork);
 	free(global->philo);
-	pthread_mutex_destroy(&global->print);
+	free(global->thrds);
 	pthread_mutex_destroy(&global->dead_check);
+	free(global);
 }
 
 static void	ft_thrd_join(t_global *global)
 {
 	unsigned int	i;
-	t_philo	philo;
 
-	i = -1;
-	while (++i < global->nb_philo)
+	i = 0;
+	while (i < global->nb_philo)
 	{
-		philo = global->philo[i];
-		pthread_join(philo.t_id, NULL);
+		pthread_join(global->thrds[i], NULL);
+		i++;
 	}
 }
 
 int	main(int argc, char **argv)
 {
-	t_global	global;
+	t_global		*global;
 	unsigned int	i;
-	int			stop;
+	int				stop;
 
 	stop = 0;
+	global = malloc(sizeof(*global));
+	if (!global)
+		return (1);
 	if (ft_check_arg(argc, argv))
 		return (1);
-	init(&global, argc, argv);
+	init(global, argc, argv);
 	i = -1;
-	while (++i < global.nb_philo)
+	while (++i < global->nb_philo)
 	{
-		global.philo[i].global = &global;
-		pthread_create(&global.philo[i].t_id,
-			NULL, &p_routine, &global.philo[i]);
+		global->philo[i].global = global;
+		pthread_create(&global->thrds[i],
+			NULL, &p_routine, &global->philo[i]);
 	}
 	while (stop == 0)
 	{
-		pthread_mutex_lock(&global.dead_check);
-		stop = (check_death(&global) || !check_nb_eat(&global));
-		pthread_mutex_unlock(&global.dead_check);
+		pthread_mutex_lock(&global->dead_check);
+		stop = (check_death(global) || !check_nb_eat(global));
+		pthread_mutex_unlock(&global->dead_check);
 	}
-	return (ft_thrd_join(&global), freeall(&global), 0);
+	return (ft_thrd_join(global), freeall(global), 0);
 }
